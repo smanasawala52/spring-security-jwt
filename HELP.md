@@ -27,5 +27,6 @@ The following guides illustrate how to use some features concretely:
 
 
 http://localhost:9193/authenticate
-
 {"username":"admin","password":"pass"}
+https://www.bezkoder.com/spring-boot-security-login-jwt/
+https://www.youtube.com/watch?v=X80nJ5T7YpE&t=58s

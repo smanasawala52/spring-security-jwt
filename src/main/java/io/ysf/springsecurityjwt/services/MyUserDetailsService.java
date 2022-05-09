@@ -5,19 +5,18 @@ import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import io.ysf.springsecurityjwt.dto.MyUser;
+
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
 	@Override
-	public UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException {
-		// UserDetails userDetails = new MyUserDetails(username);
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		List<GrantedAuthority> l1 = new ArrayList<>();
 		if (username.equalsIgnoreCase("admin")) {
 			l1.add(new SimpleGrantedAuthority("ADMIN"));
@@ -26,8 +25,7 @@ public class MyUserDetailsService implements UserDetailsService {
 		} else {
 			l1 = null;
 		}
-		User userDetails = new User(username, "pass", true, true, true, true,
-				l1);
+		MyUser userDetails = new MyUser(username, "pass", true, true, true, true, l1, "");
 		return userDetails;
 	}
 
