@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.ysf.springsecurityjwt.dto.ERole;
 import io.ysf.springsecurityjwt.dto.Role;
 import io.ysf.springsecurityjwt.dto.User;
+import io.ysf.springsecurityjwt.payload.request.LoginCodeRequest;
 import io.ysf.springsecurityjwt.payload.request.LoginRequest;
 import io.ysf.springsecurityjwt.payload.request.SignupRequest;
 import io.ysf.springsecurityjwt.payload.response.MessageResponse;
@@ -66,20 +66,17 @@ public class AuthController {
 	}
 
 	@PostMapping("/signincode")
-	public ResponseEntity<?> authenticateUserCode(@RequestParam String code) {
-		if (code != null && !code.isEmpty()) {
-			userRepository.findByCode(code);
-			User user = userRepository.findByCode(code)
-					.orElseThrow(() -> new UsernameNotFoundException("User Not Found with code: " + code));
-			if (user != null) {
-				LoginRequest loginRequest = new LoginRequest();
-				loginRequest.setUsername(user.getUsername());
-				loginRequest.setPassword(user.getPassword());
-				return authenticateUser(loginRequest);
-			}
-			return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found with code: " + code));
+	public ResponseEntity<?> authenticateUserCode(@Valid @RequestBody LoginCodeRequest loginCodeRequest) {
+		User user = userRepository.findByCode(loginCodeRequest.getCode()).orElseThrow(
+				() -> new UsernameNotFoundException("User Not Found with code: " + loginCodeRequest.getCode()));
+		if (user != null) {
+			LoginRequest loginRequest = new LoginRequest();
+			loginRequest.setUsername(user.getUsername());
+			loginRequest.setPassword(user.getPassword());
+			return authenticateUser(loginRequest);
 		}
-		return ResponseEntity.badRequest().body(new MessageResponse("Error: User not found!"));
+		return ResponseEntity.badRequest()
+				.body(new MessageResponse("Error: User not found with code: " + loginCodeRequest.getCode()));
 	}
 
 	@PostMapping("/signup")
