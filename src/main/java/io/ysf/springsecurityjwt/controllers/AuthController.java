@@ -73,7 +73,12 @@ public class AuthController {
 			LoginRequest loginRequest = new LoginRequest();
 			loginRequest.setUsername(user.getUsername());
 			loginRequest.setPassword(user.getPassword());
-			return authenticateUser(loginRequest);
+			UserDetailsImpl userDetails = UserDetailsImpl.build(user);
+			ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+			List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+					.collect(Collectors.toList());
+			return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(new UserInfoResponse(
+					userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles, userDetails.getCode()));
 		}
 		return ResponseEntity.badRequest()
 				.body(new MessageResponse("Error: User not found with code: " + loginCodeRequest.getCode()));
