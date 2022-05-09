@@ -30,3 +30,33 @@ http://localhost:9193/authenticate
 {"username":"admin","password":"pass"}
 https://www.bezkoder.com/spring-boot-security-login-jwt/
 https://www.youtube.com/watch?v=X80nJ5T7YpE&t=58s
+
+Methods	Urls	Actions
+POST	/api/auth/signup	signup new account
+POST	/api/auth/signin	login an account
+POST	/api/auth/signout	logout the account
+GET	/api/test/all	retrieve public content
+GET	/api/test/user	access User’s content
+GET	/api/test/mod	access Moderator’s content
+GET	/api/test/admin	access Admin’s content
+
+
+---
+http://localhost:9193/api/auth/signup
+{
+    "username": "smanasa1",
+    "password": "newuser1",
+    "email": "sm1@test.com",
+    "role": ["admin","mod"]
+}
+http://localhost:9193/api/auth/signin
+{
+    "username": "smanasa1",
+    "password": "newuser1"
+}
+
+
+http://localhost:9193/api/auth/signincode
+{
+    "code": "200139"
+}
