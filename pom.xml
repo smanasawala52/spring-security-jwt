@@ -11,7 +11,7 @@
 	<groupId>io.ysf</groupId>
 	<artifactId>spring-security-jwt</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>spring-security-jwt</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
